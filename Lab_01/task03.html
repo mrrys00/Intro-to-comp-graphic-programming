@@ -39,9 +39,9 @@
 
            renderScene();
 
-           /**
-            * Initialze the scene.
-            */
+           animateScene();
+
+
            function initializeScene(){
                if(Detector.webgl){
                    renderer = new THREE.WebGLRenderer({antialias:true});
@@ -141,11 +141,49 @@
                var houseMesh = new THREE.Mesh(houseGeometry, houseMaterial);
                houseMesh.position.set(2.0, 0.0, 4.0);
                scene.add(houseMesh);
+
+               // vechicle
+
+               var tyreMaterial = new THREE.MeshBasicMaterial({
+                   color:0x000000,
+                   side:THREE.DoubleSide
+               });
+
+               var vechicleMaterial = new THREE.MeshBasicMaterial({
+                   color:0x000000,
+                   side:THREE.DoubleSide
+               });
+
+                var tyreGeometry1 = newTHREE.CircleGeometry(5, 32);
+                var tyreGeometry2 = newTHREE.CircleGeometry(5, 32);
+                var vechicleGeometry = newTHREE.Geometry();
+                vechicleGeometry.vertices.push(new THREE.Vector3(-2.0,  2.0, 0.0));
+                vechicleGeometry.vertices.push(new THREE.Vector3( 2.0,  2.0, 0.0));
+                vechicleGeometry.vertices.push(new THREE.Vector3( 2.0, -2.0, 0.0));
+                vechicleGeometry.vertices.push(new THREE.Vector3(-2.0, -2.0, 0.0));
+                
+                var vechicleMesh = new THREE.Mesh(tyreGeometry1, tyreMaterial);
+                tyreMesh1.position.set(2.0, 0.0, 4.0);
+                scene.add(tyreMesh1);
+
+                var tyreMesh1 = new THREE.Mesh(tyreGeometry1, tyreMaterial);
+                tyreMesh1.position.set(2.0, 0.0, 4.0);
+                scene.add(tyreMesh1);
+                
+                var tyreMesh2 = new THREE.Mesh(tyreGeometry2, tyreMaterial);
+                tyreMesh2.position.set(2.0, 0.0, 4.0);
+                scene.add(tyreMesh2);
            }
 
-           /**
-            * Render the scene. Map the 3D world to the 2D screen.
-            */
+           function animateScene(){
+               triangleMesh.position.x += 0.001;
+               squareMesh.rotation.x -= 0.075;
+
+               requestAnimationFrame(animateScene);
+
+               renderScene();
+           }
+
            function renderScene(){
                renderer.render(scene, camera);
            }
