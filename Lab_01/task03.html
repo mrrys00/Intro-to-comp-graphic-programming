@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+ <!-- The previous line tells the browser, that the page uses the HTML5 standard. -->
+ 
+ <html>
+     <head>
+         <title>Example 02 - colors</title>
+         <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+ 
+         <!-- The following meta line optimizes the site for mobile devices. 
+		 It sets the viewport size to the screen size, so it will be displayed maximized, but unscaled. -->
+         <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+         <style type="text/css">
+             body {
+                 /* Set the background color of the HTML page to black */
+                 background-color: #000000;
+ 
+                 /* Hide oversized content. This prevents the scroll bars. */
+                 overflow: hidden;
+             }
+         </style>
+         <!-- Include two libraries
+       1. Three.js (core library)
+       2. Detector.js (checks the browsers WebGL capabilities) -->
+         <script src="three.js"></script>
+         <script src="Detector.js"></script>
+     </head>
+     <body>
+         <!-- This is the DIV element which will contain the WebGL canvas. To be identifiable lateron,
+       the id 'WebGLCanvas' is applied to it. -->
+         <div id="WebGLCanvas"> </div>
+ 
+         <!-- This JavaScript block encloses the Three.js commands -->
+         <script>
+           var scene;
+
+           var camera;
+
+           initializeScene();
+
+           renderScene();
+
+           /**
+            * Initialze the scene.
+            */
+           function initializeScene(){
+               if(Detector.webgl){
+                   renderer = new THREE.WebGLRenderer({antialias:true});
+
+               } else {
+                   renderer = new THREE.CanvasRenderer();
+               }
+
+               renderer.setClearColor(0x000000, 1);
+
+               canvasWidth = window.innerWidth;
+               canvasHeight = window.innerHeight;
+
+               renderer.setSize(canvasWidth, canvasHeight);
+
+               document.getElementById("WebGLCanvas").appendChild(renderer.domElement);
+
+               // Scene
+               scene = new THREE.Scene();
+
+               // Camera
+               camera = new THREE.PerspectiveCamera(100, canvasWidth / canvasHeight, 1, 100);
+               camera.position.set(0, 0, 10);
+               camera.lookAt(scene.position);
+               scene.add(camera);
+
+               // triangle colors
+               var triangleMaterial = new THREE.MeshBasicMaterial({
+                    color:0x008000,
+                    side:THREE.DoubleSide
+               });
+
+               var roofMaterial = new THREE.MeshBasicMaterial({
+                    color:0xFF0000,
+                    side:THREE.DoubleSide
+               });
+
+               // triangle 1
+               var triangleGeometry = new THREE.Geometry();
+               triangleGeometry.vertices.push(new THREE.Vector3( 0.0,  1.0, 0.0));
+               triangleGeometry.vertices.push(new THREE.Vector3(-1.0, -1.0, 0.0));
+               triangleGeometry.vertices.push(new THREE.Vector3( 1.0, -1.0, 0.0));
+               triangleGeometry.faces.push(new THREE.Face3(0, 1, 2));
+
+               var triangleMesh = new THREE.Mesh(triangleGeometry, triangleMaterial);
+               triangleMesh.position.set(-5, 5.0, 4.0);
+               scene.add(triangleMesh);
+
+               // tirangle 2
+               var triangleGeometry2 = new THREE.Geometry();
+               triangleGeometry2.vertices.push(new THREE.Vector3( 0.0,  1.0, 0.0));
+               triangleGeometry2.vertices.push(new THREE.Vector3(-1.0, -1.0, 0.0));
+               triangleGeometry2.vertices.push(new THREE.Vector3( 1.0, -1.0, 0.0));
+               triangleGeometry2.faces.push(new THREE.Face3(0, 1, 2));
+
+               var triangleMesh2 = new THREE.Mesh(triangleGeometry2, triangleMaterial);
+               triangleMesh2.position.set(-5, 3.5, 4.0);
+               scene.add(triangleMesh2);
+
+               // triangle 3
+               var triangleGeometry3 = new THREE.Geometry();
+               triangleGeometry3.vertices.push(new THREE.Vector3( 0.0,  1.0, 0.0));
+               triangleGeometry3.vertices.push(new THREE.Vector3(-1.0, -1.0, 0.0));
+               triangleGeometry3.vertices.push(new THREE.Vector3( 1.0, -1.0, 0.0));
+               triangleGeometry3.faces.push(new THREE.Face3(0, 1, 2));
+
+               var triangleMesh3 = new THREE.Mesh(triangleGeometry3, triangleMaterial);
+               triangleMesh3.position.set(-5, 2.0, 4.0);
+               scene.add(triangleMesh3);
+
+
+               // roof
+               var roofGeometry = new THREE.Geometry();
+               roofGeometry.vertices.push(new THREE.Vector3( 0.0,  0.0, 0.0));
+               roofGeometry.vertices.push(new THREE.Vector3(-2.0, -2.0, 0.0));
+               roofGeometry.vertices.push(new THREE.Vector3( 2.0, -2.0, 0.0));
+               roofGeometry.faces.push(new THREE.Face3(0, 1, 2));
+
+               var roofMesh = new THREE.Mesh(roofGeometry, roofMaterial);
+               roofMesh.position.set(2.0, 4.0, 4.0);
+               scene.add(roofMesh);
+
+               // house
+               var houseGeometry = new THREE.Geometry();
+               houseGeometry.vertices.push(new THREE.Vector3(-2.0,  2.0, 0.0));
+               houseGeometry.vertices.push(new THREE.Vector3( 2.0,  2.0, 0.0));
+               houseGeometry.vertices.push(new THREE.Vector3( 2.0, -2.0, 0.0));
+               houseGeometry.vertices.push(new THREE.Vector3(-2.0, -2.0, 0.0));
+			   houseGeometry.faces.push(new THREE.Face3(0, 1, 2));
+			   houseGeometry.faces.push(new THREE.Face3(0, 2, 3));
+
+               var houseMaterial = new THREE.MeshBasicMaterial({
+                   color:0x8080FF,
+                   side:THREE.DoubleSide
+               });
+
+               var houseMesh = new THREE.Mesh(houseGeometry, houseMaterial);
+               houseMesh.position.set(2.0, 0.0, 4.0);
+               scene.add(houseMesh);
+           }
+
+           /**
+            * Render the scene. Map the 3D world to the 2D screen.
+            */
+           function renderScene(){
+               renderer.render(scene, camera);
+           }
+       </script>
+     </body>
+</html>
